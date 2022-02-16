@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainPage"
+    android:gravity="center"
+    android:orientation="vertical"
+    >
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="WELCOME TO FAVOURITE LOCATION FINDER"
+        android:textColor="@color/pink"
+        android:textSize="34sp"
+        android:textStyle="bold|italic" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="166dp"
+        android:layout_height="148dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="15dp"
+        app:srcCompat="@drawable/globe_picture" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFC107"
+        android:gravity="center"
+        android:text="SELECT THE REQUIRED MAP VIEW FROM BELOW"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginBottom="10dp"
+        android:textStyle="bold">
+
+    </TextView>
+
+    <RadioGroup
+        android:id="@+id/radioGrp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="7dp"
+        android:layout_marginLeft="7dp"
+        >
+
+        <RadioButton
+            android:id="@+id/normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DEFALUT VIEW">
+
+        </RadioButton>
+
+        <RadioButton
+            android:id="@+id/satellite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SATELIGHT VIEW">
+
+        </RadioButton>
+
+        <RadioButton
+            android:id="@+id/hybrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="HYBRID VIEW">
+
+        </RadioButton>
+        <RadioButton
+            android:id="@+id/terrain"
+            android:text="TERRAIN VIEW"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </RadioButton>
+
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/currentLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/border_back"
+        android:text="To add favourite places CLICK"
+
+        app:cornerRadius="@dimen/cardview_compat_inset_shadow"
+        app:icon="@drawable/ic_baseline_add_location_24">
+
+    </Button>
+
+    <Button
+        android:id="@+id/savedPlaces"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/border_back"
+        android:text="To Display Favourite Places"
+        app:icon="@drawable/ic_baseline_favorite_border_24">
+
+    </Button>
+
+    <Button
+        android:visibility="gone"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:text="Show User Current Location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </Button>
+
+</LinearLayout>

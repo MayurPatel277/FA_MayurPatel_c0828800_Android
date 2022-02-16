@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/cardview_compat_inset_shadow"
+    android:orientation="vertical"
+    android:layout_margin="5dp"
+    android:padding="10dp"
+    android:background="@drawable/border"
+
+    >
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/cardview_compat_inset_shadow"
+        android:padding="5dp"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:background="@drawable/border"
+        android:textStyle="bold|italic">
+
+    </TextView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="right"
+            android:weightSum="100">
+
+            <Button
+                android:id="@+id/displayLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:backgroundTint="@color/teal_700"
+                app:icon="@drawable/ic_to_see_location_icon"
+                android:text="display location"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                app:iconGravity="start" />
+            <Button
+                android:id="@+id/edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:backgroundTint="@color/purple_200"
+                android:filterTouchesWhenObscured="true"
+                android:layout_marginRight="5dp"
+                android:text="CHANGE LOCATION"
+                app:icon="@drawable/ic_baseline_edit_24"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="right"
+            android:weightSum="100">
+
+            <Button
+                android:id="@+id/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="100"
+                android:backgroundTint="@color/red"
+                android:filterTouchesWhenObscured="true"
+                android:text="TRASH LOCATION"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                app:icon="@drawable/ic_baseline_delete_24">
+
+            </Button>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
