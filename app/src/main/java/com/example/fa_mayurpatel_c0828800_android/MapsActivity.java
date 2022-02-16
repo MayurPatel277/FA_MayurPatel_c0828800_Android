@@ -12,6 +12,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.LocationCallback;
@@ -28,31 +30,32 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback , GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerDragListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerDragListener {
 
     private GoogleMap mMap;
-    Marker mCurrLocationMarker,updateMarker;
+    Marker mCurrLocationMarker, updateMarker;
     String mapType;
     DataBaseHelper dataBaseHelper;
     DataBaseModel model;
+    private TextView distance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-
+        distance = findViewById(R.id.map_distance);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        Bundle bundle=getIntent().getExtras();
-        if(bundle!=null){
-            mapType=bundle.getString("TYPE");
-            model=bundle.getParcelable("MODEL");
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            mapType = bundle.getString("TYPE", "");
+            model = bundle.getParcelable("MODEL");
 
-            if(mapType.equalsIgnoreCase("")){
+            if (mapType.equalsIgnoreCase("")) {
 
                 new AlertDialog.Builder(MapsActivity.this)
                         .setTitle("Alert")
@@ -72,7 +75,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .setCancelable(true)
                         .show();
 
-            }else{
+            } else {
 
                 new AlertDialog.Builder(MapsActivity.this)
                         .setTitle("Alert")
@@ -93,17 +96,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .show();
 
 
-
             }
         }
 
-        dataBaseHelper =new DataBaseHelper(MapsActivity.this);
+        dataBaseHelper = new DataBaseHelper(MapsActivity.this);
 
         getLocation();
-
-
-
-
 
 
     }
@@ -123,28 +121,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapLongClickListener(this);
         mMap.setOnMarkerDragListener(this);
 
-        if(mapType.equalsIgnoreCase("Normal")){
+        if (mapType.equalsIgnoreCase("DEFALUT VIEW")) {
             mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        }else if(mapType.equalsIgnoreCase("Satellite")){
+        } else if (mapType.equalsIgnoreCase("SATELIGHT VIEW")) {
             mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
-        }else if(mapType.equalsIgnoreCase("Hybrid")){
+        } else if (mapType.equalsIgnoreCase("HYBRID VIEW")) {
             mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
-        }else if(mapType.equalsIgnoreCase("Terrain")) {
+        } else if (mapType.equalsIgnoreCase("TERRAIN VIEW")) {
             mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 
         }
 
-        if(mapType.equalsIgnoreCase("")){
+        if (mapType.equalsIgnoreCase("")) {
 
             mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             //Place current location marker
             LatLng latLng = new LatLng(Double.parseDouble(model.getLat()), Double.parseDouble(model.getLng()));
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(latLng);
-            markerOptions.title(AddressModel.getAddress(Double.parseDouble(model.getLng()),Double.parseDouble(model.getLng()),MapsActivity.this));
+            markerOptions.title(AddressModel.getAddress(Double.parseDouble(model.getLng()), Double.parseDouble(model.getLng()), MapsActivity.this));
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
             markerOptions.draggable(true);
             updateMarker = mMap.addMarker(markerOptions);
@@ -197,7 +195,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             LatLng latLng = new LatLng(lati, longi);
                             MarkerOptions markerOptions = new MarkerOptions();
                             markerOptions.position(latLng);
-                            markerOptions.title(AddressModel.getAddress(lati,longi,MapsActivity.this));
+                            markerOptions.title(AddressModel.getAddress(lati, longi, MapsActivity.this));
                             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
                             mCurrLocationMarker = mMap.addMarker(markerOptions);
 
@@ -205,6 +203,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                             mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
 
+                            if (model != null) {
+                                float[] results = new float[1];
+                                Location.distanceBetween(lati, longi, Double.parseDouble(model.getLat()), Double.parseDouble(model.getLng()), results);
+                                distance.setText(String.format("Distance: %f meters", results[0]));
+                            } else {
+                                distance.setVisibility(View.GONE);
+                            }
                             //fetchaddressfromlocation(location);
 
                         } else {
@@ -221,14 +226,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         double lng = latLng.longitude;
         mMap.addMarker(new MarkerOptions()
                 .position(latLng)
-                .title(AddressModel.getAddress(lat,lng,MapsActivity.this))
+                .title(AddressModel.getAddress(lat, lng, MapsActivity.this))
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
-        dataBaseHelper.insert(AddressModel.getAddress(lat,lng,MapsActivity.this),String.valueOf(lat),String.valueOf(lng),"false");
+        dataBaseHelper.insert(AddressModel.getAddress(lat, lng, MapsActivity.this), String.valueOf(lat), String.valueOf(lng), 0, 0);
         Toast.makeText(MapsActivity.this, "SELECTED LOCATION IS ADDED IN YOU FAVOURITE PLACE LIST", Toast.LENGTH_SHORT).show();
 
     }
-
 
 
     @Override
@@ -248,7 +252,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         markerOptions.draggable(true);
         updateMarker = mMap.addMarker(markerOptions);
 
-        dataBaseHelper.updatePlace(model, AddressModel.getAddress(marker.getPosition().latitude, marker.getPosition().longitude,MapsActivity.this),String.valueOf(marker.getPosition().latitude),String.valueOf(marker.getPosition().longitude));
+        dataBaseHelper.updatePlace(model, AddressModel.getAddress(marker.getPosition().latitude, marker.getPosition().longitude, MapsActivity.this), String.valueOf(marker.getPosition().latitude), String.valueOf(marker.getPosition().longitude));
         Toast.makeText(MapsActivity.this, "CHANGES IN LOCATION IS UPDATED SUCCESSFULLY", Toast.LENGTH_SHORT).show();
 
     }

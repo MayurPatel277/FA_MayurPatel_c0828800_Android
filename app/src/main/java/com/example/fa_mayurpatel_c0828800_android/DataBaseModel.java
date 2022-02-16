@@ -9,17 +9,26 @@ public class DataBaseModel implements Parcelable {
     private String  lat;
     private String lng;
 
-    public DataBaseModel(int id, String placeName, String lat, String lng) {
-        this.id = id;
-        this.placeName = placeName;
-        this.lat = lat;
-        this.lng = lng;
+    public int getIsVisited() {
+        return isVisited;
     }
 
-    public DataBaseModel(){
-
+    public void setIsVisited(int isVisited) {
+        this.isVisited = isVisited;
     }
 
+    public int getIsFav() {
+        return isFav;
+    }
+
+    public void setIsFav(int isFav) {
+        this.isFav = isFav;
+    }
+
+    private int isVisited;
+    private int isFav;
+
+    public DataBaseModel() { }
 
     public int getId() {
         return id;
@@ -58,6 +67,8 @@ public class DataBaseModel implements Parcelable {
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_LAT = "lat";
     public static final String COLUMN_LNG = "lng";
+    public static final String IS_VISITED = "visit";
+    public static final String IS_FAVORITE = "fav";
 
     // Create table SQL query
     public static final String CREATE_TABLE =
@@ -65,7 +76,9 @@ public class DataBaseModel implements Parcelable {
                     + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + COLUMN_NAME + " TEXT,"
                     + COLUMN_LAT + " TEXT,"
-                    + COLUMN_LNG + " TEXT"
+                    + COLUMN_LNG + " TEXT,"
+                    + IS_VISITED + " INTEGER,"
+                    + IS_FAVORITE + " INTEGER"
                     + ")";
 
     protected DataBaseModel(Parcel in) {
@@ -73,6 +86,7 @@ public class DataBaseModel implements Parcelable {
         placeName = in.readString();
         lat = in.readString();
         lng = in.readString();
+        isVisited = in.readInt();
     }
 
     public static final Creator<DataBaseModel> CREATOR = new Creator<DataBaseModel>() {

@@ -15,9 +15,9 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 public class MainPage extends AppCompatActivity {
-    RadioButton normal,terrain, hybrid, satellite;
-    Button currentLocation,places;
-    String selectedMap="";
+    RadioButton normal, terrain, hybrid, satellite;
+    Button currentLocation, places;
+    String selectedMap = "";
     RadioGroup radioGrp;
 
     @Override
@@ -28,18 +28,15 @@ public class MainPage extends AppCompatActivity {
         findIds();
 
         // This overrides the radiogroup onCheckListener
-        radioGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
-            public void onCheckedChanged(RadioGroup group, int checkedId)
-            {
+        radioGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
                 // This will get the radiobutton that has changed in its check state
-                RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
+                RadioButton checkedRadioButton = (RadioButton) group.findViewById(checkedId);
                 // This puts the value (true/false) into the variable
                 boolean isChecked = checkedRadioButton.isChecked();
                 // If the radiobutton that has changed in check state is now checked...
-                if (isChecked)
-                {
-                    selectedMap=checkedRadioButton.getText()+"";
+                if (isChecked) {
+                    selectedMap = checkedRadioButton.getText() + "";
                 }
             }
         });
@@ -47,18 +44,17 @@ public class MainPage extends AppCompatActivity {
         currentLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(normal.isChecked()==false
-                        &&terrain.isChecked()==false&&satellite.isChecked()==false
-                        &&hybrid.isChecked()==false){
+                if (!normal.isChecked()
+                        && !terrain.isChecked() && !satellite.isChecked()
+                        && !hybrid.isChecked()) {
                     Toast.makeText(MainPage.this, "MAP TYPE MUST BE SELECTED FIRST", Toast.LENGTH_SHORT).show();
 
-                }else if(!getPermissison()){
+                } else if (!getPermissison()) {
                     getPermissison();
-                }
-                else{
-                    Intent intent=new Intent(MainPage.this,MapsActivity.class);
-                    intent.putExtra("TYPE",selectedMap);
-                    intent.putExtra("MODEL","");
+                } else {
+                    Intent intent = new Intent(MainPage.this, MapsActivity.class);
+                    intent.putExtra("TYPE", selectedMap);
+                    intent.putExtra("MODEL", "");
                     startActivity(intent);
                 }
             }
@@ -72,7 +68,7 @@ public class MainPage extends AppCompatActivity {
         });
     }
 
-    public boolean getPermissison(){
+    public boolean getPermissison() {
         if (ActivityCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -88,7 +84,7 @@ public class MainPage extends AppCompatActivity {
         switch (requestCode) {
             case 1:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startActivity( new Intent(MainPage.this,MapsActivity.class));
+                    startActivity(new Intent(MainPage.this, MapsActivity.class));
                     finish();
                 }
                 break;
@@ -96,12 +92,12 @@ public class MainPage extends AppCompatActivity {
     }
 
     private void findIds() {
-        normal=findViewById(R.id.normal);
-        terrain=findViewById(R.id.terrain);
-        hybrid=findViewById(R.id.hybrid);
-        satellite=findViewById(R.id.satellite);
-        currentLocation=findViewById(R.id.currentLocation);
-        places=findViewById(R.id.savedPlaces);
-        radioGrp=findViewById(R.id.radioGrp);
+        normal = findViewById(R.id.normal);
+        terrain = findViewById(R.id.terrain);
+        hybrid = findViewById(R.id.hybrid);
+        satellite = findViewById(R.id.satellite);
+        currentLocation = findViewById(R.id.currentLocation);
+        places = findViewById(R.id.savedPlaces);
+        radioGrp = findViewById(R.id.radioGrp);
     }
 }

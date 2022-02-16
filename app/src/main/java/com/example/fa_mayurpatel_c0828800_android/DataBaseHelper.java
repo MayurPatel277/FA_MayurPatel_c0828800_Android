@@ -42,7 +42,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
 
-    public long insert(String name,String lat,String lng,String completed) {
+    public long insert(String name,String lat,String lng,int isVisited, int isFav) {
         // get writable database as we want to write data
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -52,6 +52,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         values.put(DataBaseModel.COLUMN_NAME, name);
         values.put(DataBaseModel.COLUMN_LAT, lat);
         values.put(DataBaseModel.COLUMN_LNG, lng);
+        values.put(DataBaseModel.IS_FAVORITE, isVisited);
+        values.put(DataBaseModel.IS_FAVORITE, isFav);
 
         // insert row
         long id = db.insert(DataBaseModel.TABLE_NAME, null, values);
@@ -81,6 +83,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 note.setPlaceName(cursor.getString(cursor.getColumnIndex(DataBaseModel.COLUMN_NAME)));
                 note.setLat(cursor.getString(cursor.getColumnIndex(DataBaseModel.COLUMN_LAT)));
                 note.setLng(cursor.getString(cursor.getColumnIndex(DataBaseModel.COLUMN_LNG)));
+                note.setIsVisited(cursor.getInt(cursor.getColumnIndex(DataBaseModel.IS_VISITED)));
+                note.setIsFav(cursor.getInt(cursor.getColumnIndex(DataBaseModel.IS_FAVORITE)));
 
                 notes.add(note);
             } while (cursor.moveToNext());
@@ -111,6 +115,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(note.getId())});
     }
 
+    public int updateIsVisited(int id, int isVisited) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DataBaseModel.IS_VISITED, isVisited);
+        // updating row
+        return db.update(DataBaseModel.TABLE_NAME, values, DataBaseModel.COLUMN_ID + " = ?",
+                new String[]{String.valueOf(id)});
+    }
 
+    public int updateIsFav(int id, int isFav) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DataBaseModel.IS_FAVORITE, isFav);
+        // updating row
+        return db.update(DataBaseModel.TABLE_NAME, values, DataBaseModel.COLUMN_ID + " = ?",
+                new String[]{String.valueOf(id)});
+    }
 
 }
